@@ -1,3 +1,13 @@
+import * as React from "react";
+import { useIsLoggedIn } from "context/contextFn";
+
 export default function Home() {
-  return <div>Home</div>;
+  const { setIsLoggedIn } = useIsLoggedIn();
+
+  return (
+    <>
+      <div>Home</div>
+      <button onClick={() => setIsLoggedIn(false)}>Log out now!</button>
+    </>
+  );
 }

@@ -5,8 +5,7 @@ import NotFound from "screens/NotFound";
 import { useIsLoggedIn } from "context/contextFn";
 
 const AppRouter = () => {
-  const { isLoggedIn, setIsLoggedIn } = useIsLoggedIn();
-  console.log(isLoggedIn, setIsLoggedIn);
+  const { isLoggedIn } = useIsLoggedIn();
 
   return (
     <Router>
@@ -14,7 +13,7 @@ const AppRouter = () => {
         <Route path="/" exact>
           {isLoggedIn ? <Home /> : <Login />}
         </Route>
-        <Route>
+        <Route path="/*">
           <NotFound />
         </Route>
       </Switch>
