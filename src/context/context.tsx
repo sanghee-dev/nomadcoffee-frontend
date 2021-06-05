@@ -10,11 +10,11 @@ const ContextProvider = ({ children }: any) => {
   return (
     <Context.Provider
       value={{
-        loggedIn: {
+        isLoggedInContext: {
           isLoggedIn,
           setIsLoggedIn,
         },
-        darkMode: {
+        isDarkModeContext: {
           isDarkMode,
           setIsDarkMode,
         },

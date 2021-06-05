@@ -1,9 +1,9 @@
 export type ContextType = {
-  loggedIn: {
+  isLoggedInContext: {
     isLoggedIn: boolean;
     setIsLoggedIn: (isLoggedIn: boolean) => void;
   };
-  darkMode: {
+  isDarkModeContext: {
     isDarkMode: boolean;
     setIsDarkMode: (isDarkMode: boolean) => void;
   };
