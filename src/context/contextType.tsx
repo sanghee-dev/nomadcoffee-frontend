@@ -1,8 +1,10 @@
-type StateTypes = {
-  isLoggedIn: boolean;
-  setIsLoggedIn: (isLoggedIn: boolean) => void;
-};
-
 export type ContextType = {
-  loggedIn: StateTypes;
+  loggedIn: {
+    isLoggedIn: boolean;
+    setIsLoggedIn: (isLoggedIn: boolean) => void;
+  };
+  darkMode: {
+    isDarkMode: boolean;
+    setIsDarkMode: (isDarkMode: boolean) => void;
+  };
 };

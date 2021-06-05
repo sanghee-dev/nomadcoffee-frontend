@@ -14,6 +14,10 @@ const ContextProvider = ({ children }: any) => {
           isLoggedIn,
           setIsLoggedIn,
         },
+        darkMode: {
+          isDarkMode,
+          setIsDarkMode,
+        },
       }}
     >
       {children}
