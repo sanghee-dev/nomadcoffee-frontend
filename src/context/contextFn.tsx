@@ -3,6 +3,6 @@ import { Context } from "./context";
 import { ContextType } from "./contextType";
 
 export const useIsLoggedIn = () => {
-  const { isLoggedIn } = useContext(Context) as ContextType;
-  return isLoggedIn;
+  const { loggedIn } = useContext(Context) as ContextType;
+  return loggedIn;
 };
