@@ -1,17 +1,24 @@
 import AppRouter from "router/AppRouter";
+import { ApolloProvider } from "@apollo/client";
+import { client } from "apollo";
+import { UseIsDarkMode } from "context/contextFn";
+import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyles } from "styles/globalStyles";
 import { lightTheme, darkTheme } from "styles/styles";
-import { useIsDarkMode } from "context/contextFn";
 
 function App() {
-  const { isDarkMode } = useIsDarkMode();
+  const { isDarkMode } = UseIsDarkMode();
 
   return (
-    <ThemeProvider theme={!isDarkMode ? lightTheme : darkTheme}>
-      <GlobalStyles />
-      <AppRouter />
-    </ThemeProvider>
+    <ApolloProvider client={client}>
+      <HelmetProvider>
+        <ThemeProvider theme={!isDarkMode ? lightTheme : darkTheme}>
+          <GlobalStyles />
+          <AppRouter />
+        </ThemeProvider>
+      </HelmetProvider>
+    </ApolloProvider>
   );
 }
 

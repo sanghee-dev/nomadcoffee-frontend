@@ -1,13 +1,13 @@
-import * as React from "react";
-import { useIsLoggedIn } from "context/contextFn";
+import { useHistory } from "react-router";
+import { logUserOut } from "apollo";
 
 export default function Home() {
-  const { setIsLoggedIn } = useIsLoggedIn();
+  const history = useHistory();
 
   return (
     <>
-      <div>Home</div>
-      <button onClick={() => setIsLoggedIn(false)}>Log out now!</button>
+      <h1>Home</h1>
+      <button onClick={() => logUserOut(history)}>Log out</button>
     </>
   );
 }

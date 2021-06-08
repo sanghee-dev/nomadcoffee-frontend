@@ -1,8 +1,6 @@
 import { useForm } from "react-hook-form";
-import { useLocation } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
-import { logUserIn } from "apollo";
-import { UseIsLoggedIn } from "context/contextFn";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import routes from "router/routes";
 import styled from "styled-components";
@@ -24,29 +22,33 @@ const Message = styled.h2`
 
 type FormData = {
   username: string;
+  email: string;
+  name: string;
   password: string;
   result: string;
 };
 
-type LocationState = {
-  message: string;
-  username: string;
-  password: string;
-};
-
-const LOGIN_MUTATION = gql`
-  mutation login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
+const CREATE_ACCOUNT_MUTATION = gql`
+  mutation createAccount(
+    $username: String!
+    $email: String!
+    $name: String!
+    $password: String!
+  ) {
+    createAccount(
+      username: $username
+      email: $email
+      name: $name
+      password: $password
+    ) {
       ok
       error
-      token
     }
   }
 `;
 
-export default function Login() {
-  const { setIsLoggedIn } = UseIsLoggedIn();
-  const location = useLocation<LocationState>();
+export default function SignUp() {
+  const history = useHistory();
 
   const {
     register,
@@ -55,45 +57,70 @@ export default function Login() {
     getValues,
     setError,
     formState: { errors, isValid },
-  } = useForm<FormData>({
-    mode: "onChange",
-    defaultValues: {
-      username: location?.state?.username || "",
-      password: location?.state?.password || "",
-    },
-  });
+  } = useForm<FormData>({ mode: "onChange" });
 
   const onSubmitValid = (data: any) => {
     if (loading) return;
-    login({ variables: { ...data } });
+    createAccount({ variables: { ...data } });
   };
   const onCompleted = (data: any) => {
+    const { username, password } = getValues();
     const {
-      login: { ok, error, token },
+      createAccount: { ok, error },
     } = data;
-    if (!ok) setError("result", { message: error });
-    if (token) {
-      logUserIn(token);
-      setIsLoggedIn(true);
+    if (!ok) {
+      setError("result", { message: error });
+    } else {
+      history.push(routes.home, {
+        username,
+        password,
+        message: "Account created. Plesase log in.",
+      });
     }
   };
 
-  const [login, { loading }] = useMutation(LOGIN_MUTATION, {
+  const [createAccount, { loading }] = useMutation(CREATE_ACCOUNT_MUTATION, {
     onCompleted,
   });
 
   return (
     <>
-      <HelmetTitle title="Log In" />
+      <HelmetTitle title="Sign Up" />
 
-      <Message>{location?.state?.message}</Message>
       <FormBox onSubmit={handleSubmit(onSubmitValid)}>
+        <p style={{ fontSize: 20 }}>
+          Sign up to see photos and videos
+          <br />
+          from your friends.
+        </p>
+
+        <FacebookButton type="button">
+          <FontAwesomeIcon icon={faFacebookSquare} style={{ fontSize: 18 }} />
+          <h2>Log in with Facebook</h2>
+        </FacebookButton>
+
+        <Divider />
+
         <input
           ref={register(RefObj("Username"))}
           style={{ borderColor: errors?.username ? "red" : "inherit" }}
           type="text"
           name="username"
           placeholder="Username"
+        />
+        <input
+          ref={register(RefObj("Email"))}
+          style={{ borderColor: errors?.email ? "red" : "inherit" }}
+          type="text"
+          name="email"
+          placeholder="Email"
+        />
+        <input
+          ref={register(RefObj("Name"))}
+          style={{ borderColor: errors?.name ? "red" : "inherit" }}
+          type="text"
+          name="name"
+          placeholder="Name"
         />
         <input
           ref={register(RefObj("Password"))}
@@ -104,28 +131,23 @@ export default function Login() {
         />
 
         <Message>{errors?.username?.message}</Message>
+        <Message>{errors?.email?.message}</Message>
+        <Message>{errors?.name?.message}</Message>
         <Message>{errors?.password?.message}</Message>
         <Message>{errors?.result?.message}</Message>
 
         <BlueButton
           type="submit"
-          value="Log In"
+          value="Sign Up"
           disabled={!isValid || loading}
         />
-
-        <Divider />
-
-        <FacebookButton type="button">
-          <FontAwesomeIcon icon={faFacebookSquare} style={{ fontSize: 18 }} />
-          <h2>Log in with Facebook</h2>
-        </FacebookButton>
       </FormBox>
 
       <FormBox>
         <LabelButton>
-          <label>Don't have an account?</label>
-          <Link to={routes.signUp}>
-            <span>Sign up</span>
+          <label>Have an account?</label>
+          <Link to={routes.home}>
+            <span>Log in</span>
           </Link>
         </LabelButton>
       </FormBox>

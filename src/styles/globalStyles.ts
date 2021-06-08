@@ -6,10 +6,9 @@ export const GlobalStyles = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
-  body{
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  body {
+    font-family: ${(props) => props.theme.fontFamily};
     background-color: ${(props) => props.theme.backgroundColor};
-    color: ${(props) => props.theme.blue};
     overflow-y: scroll;
   }
   a {
@@ -19,43 +18,50 @@ export const GlobalStyles = createGlobalStyle`
   button {
     border: none;
     outline: none;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: ${(props) => props.theme.fontFamily};
     cursor: pointer;
     background-color: transparent;
-    border-radius: 4px;
+    border-radius: ${(props) => props.theme.borderRadius};
     text-align: center;
     &:active {
       opacity: ${(props) => props.theme.opacity};
     }
   }
   input {
-    all:unset;
-    border: ${(props) => props.theme.border};
-    background-color: ${(props) => props.theme.backgroundColor};
-    border-radius: 2px;
+    all: unset;
     height: 38px;
-    &::placeholder{
+    border: ${(props) => props.theme.borderLight};
+    border-radius: ${(props) => props.theme.borderRadius};
+    background-color: white;
+    margin: ${(props) => props.theme.margin} 0;
+    padding: 0 ${(props) => props.theme.padding2};
+    font-size: ${(props) => props.theme.h2};
+    &::placeholder {
       color: rgb(160,160,160);
     }
     &:focus {
-      border: ${(props) => props.theme.border};
+      border: ${(props) => props.theme.borderDark};
     }
   }
   h1 {
     font-size: ${(props) => props.theme.h1};
-    font-weight: 300;
-    line-height: ${(props) => props.theme.lineHeight};
+    font-family: "Abril Fatface", cursive;
   }
   h2 {
     font-size: ${(props) => props.theme.h2};
-    line-height: ${(props) => props.theme.lineHeight};
   }
   h3 {
     font-size: ${(props) => props.theme.h3};
-    line-height: ${(props) => props.theme.lineHeight};
   }
   h4 {
     font-size: ${(props) => props.theme.h4};
+  }
+  h1, h2, h3, h4 {
     line-height: ${(props) => props.theme.lineHeight};
+  }
+  p {
+    line-height: ${(props) => props.theme.lineHeight};
+    color:${(props) => props.theme.gray};
+    text-align: center;
   }
 `;
