@@ -1,5 +1,9 @@
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
+import {
+  createAccount,
+  createAccountVariables,
+} from "__generated__/createAccount";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import routes from "router/routes";
@@ -25,7 +29,8 @@ type FormData = {
   email: string;
   name: string;
   password: string;
-  result: string;
+  result?: string;
+  message?: string;
 };
 
 const CREATE_ACCOUNT_MUTATION = gql`
@@ -55,8 +60,8 @@ export default function SignUp() {
     handleSubmit,
     setValue,
     getValues,
-    setError,
     formState: { errors, isValid },
+    setError,
   } = useForm<FormData>({ mode: "onChange" });
 
   const onSubmitValid = (data: any) => {
@@ -79,7 +84,10 @@ export default function SignUp() {
     }
   };
 
-  const [createAccount, { loading }] = useMutation(CREATE_ACCOUNT_MUTATION, {
+  const [createAccount, { loading }] = useMutation<
+    createAccount,
+    createAccountVariables
+  >(CREATE_ACCOUNT_MUTATION, {
     onCompleted,
   });
 
@@ -103,28 +111,24 @@ export default function SignUp() {
 
         <input
           ref={register(RefObj("Username"))}
-          style={{ borderColor: errors?.username ? "red" : "inherit" }}
           type="text"
           name="username"
           placeholder="Username"
         />
         <input
           ref={register(RefObj("Email"))}
-          style={{ borderColor: errors?.email ? "red" : "inherit" }}
           type="text"
           name="email"
           placeholder="Email"
         />
         <input
           ref={register(RefObj("Name"))}
-          style={{ borderColor: errors?.name ? "red" : "inherit" }}
           type="text"
           name="name"
           placeholder="Name"
         />
         <input
           ref={register(RefObj("Password"))}
-          style={{ borderColor: errors?.password ? "red" : "inherit" }}
           type="password"
           name="password"
           placeholder="Password"

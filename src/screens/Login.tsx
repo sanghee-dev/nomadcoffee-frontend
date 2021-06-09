@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
+import { login, loginVariables } from "__generated__/login";
 import { logUserIn } from "apollo";
 import { UseIsLoggedIn } from "context/contextFn";
 import { Link } from "react-router-dom";
@@ -25,13 +26,8 @@ const Message = styled.h2`
 type FormData = {
   username: string;
   password: string;
-  result: string;
-};
-
-type LocationState = {
-  message: string;
-  username: string;
-  password: string;
+  result?: string;
+  message?: string;
 };
 
 const LOGIN_MUTATION = gql`
@@ -46,13 +42,11 @@ const LOGIN_MUTATION = gql`
 
 export default function Login() {
   const { setIsLoggedIn } = UseIsLoggedIn();
-  const location = useLocation<LocationState>();
+  const location = useLocation<FormData>();
 
   const {
     register,
     handleSubmit,
-    setValue,
-    getValues,
     setError,
     formState: { errors, isValid },
   } = useForm<FormData>({
@@ -78,9 +72,12 @@ export default function Login() {
     }
   };
 
-  const [login, { loading }] = useMutation(LOGIN_MUTATION, {
-    onCompleted,
-  });
+  const [login, { loading }] = useMutation<login, loginVariables>(
+    LOGIN_MUTATION,
+    {
+      onCompleted,
+    }
+  );
 
   return (
     <>
