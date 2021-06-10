@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { UseIsLoggedIn } from "context/contextFn";
 import routes from "router/routes";
+import Layout from "components/Layout";
 import Home from "screens/Home";
 import Login from "screens/Login";
 import SignUp from "screens/SignUp";
 import NotFound from "screens/NotFound";
-import Layout from "components/Layout";
-import DarkModeBtn from "components/auth/DarkModeBtn";
+import Add from "screens/Add";
+import Edit from "screens/Edit";
 
 const AppRouter = () => {
   const { isLoggedIn } = UseIsLoggedIn();
@@ -14,7 +15,6 @@ const AppRouter = () => {
   return (
     <Router>
       <Layout>
-        <DarkModeBtn />
         <Switch>
           <Route
             path={routes.home}
@@ -24,6 +24,9 @@ const AppRouter = () => {
           {!isLoggedIn ? (
             <Route path={routes.signUp} component={SignUp} />
           ) : null}
+          <Route path={routes.add} component={Add} />
+          <Route path={routes.edit} component={Edit} />
+
           <Route path={routes.notFound} component={NotFound} />
         </Switch>
       </Layout>

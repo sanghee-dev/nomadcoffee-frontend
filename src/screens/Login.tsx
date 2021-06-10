@@ -1,12 +1,10 @@
+import { UseLogin } from "apollo/users/login";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
-import { gql, useMutation } from "@apollo/client";
-import { login, loginVariables } from "__generated__/login";
-import { logUserIn } from "apollo";
+import { logUserIn } from "apollo/apollo";
 import { UseIsLoggedIn } from "context/contextFn";
 import { Link } from "react-router-dom";
 import routes from "router/routes";
-import styled from "styled-components";
 import HelmetTitle from "components/HelmetTitle";
 import FormBox from "components/auth/FormBox";
 import BlueButton from "components/button/BlueButton";
@@ -17,11 +15,7 @@ import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
 import Divider from "components/auth/Divider";
 import AppStore from "components/auth/AppStore";
 import RefObj from "components/auth/RefObj";
-
-const Message = styled.h2`
-  color: red;
-  text-align: center;
-`;
+import ErrorMessage from "components/text/ErrorMessage";
 
 type FormData = {
   username: string;
@@ -29,16 +23,6 @@ type FormData = {
   result?: string;
   message?: string;
 };
-
-const LOGIN_MUTATION = gql`
-  mutation login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      ok
-      error
-      token
-    }
-  }
-`;
 
 export default function Login() {
   const { setIsLoggedIn } = UseIsLoggedIn();
@@ -72,18 +56,13 @@ export default function Login() {
     }
   };
 
-  const [login, { loading }] = useMutation<login, loginVariables>(
-    LOGIN_MUTATION,
-    {
-      onCompleted,
-    }
-  );
+  const { login, loading } = UseLogin(onCompleted);
 
   return (
     <>
       <HelmetTitle title="Log In" />
 
-      <Message>{location?.state?.message}</Message>
+      <ErrorMessage>{location?.state?.message}</ErrorMessage>
       <FormBox onSubmit={handleSubmit(onSubmitValid)}>
         <input
           ref={register(RefObj("Username"))}
@@ -100,9 +79,9 @@ export default function Login() {
           placeholder="Password"
         />
 
-        <Message>{errors?.username?.message}</Message>
-        <Message>{errors?.password?.message}</Message>
-        <Message>{errors?.result?.message}</Message>
+        <ErrorMessage>{errors?.username?.message}</ErrorMessage>
+        <ErrorMessage>{errors?.password?.message}</ErrorMessage>
+        <ErrorMessage>{errors?.result?.message}</ErrorMessage>
 
         <BlueButton
           type="submit"

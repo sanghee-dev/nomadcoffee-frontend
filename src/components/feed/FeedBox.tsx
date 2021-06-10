@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const FormBox = styled.form`
+const FeedBox = styled.div`
   width: 100%;
   max-width: ${(props) => props.theme.maxWidth};
   margin-left: auto;
@@ -12,9 +12,6 @@ const FormBox = styled.form`
   background-color: white;
   border: ${(props) => props.theme.borderLight};
   border-radius: ${(props) => props.theme.borderRadius};
-  & label {
-    color: black;
-  }
 `;
 
-export default FormBox;
+export default FeedBox;

@@ -1,13 +1,8 @@
+import { UseCreateAccount } from "apollo/users/createAccount";
 import { useForm } from "react-hook-form";
-import { gql, useMutation } from "@apollo/client";
-import {
-  createAccount,
-  createAccountVariables,
-} from "__generated__/createAccount";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import routes from "router/routes";
-import styled from "styled-components";
 import HelmetTitle from "components/HelmetTitle";
 import FormBox from "components/auth/FormBox";
 import BlueButton from "components/button/BlueButton";
@@ -18,11 +13,7 @@ import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
 import Divider from "components/auth/Divider";
 import AppStore from "components/auth/AppStore";
 import RefObj from "components/auth/RefObj";
-
-const Message = styled.h2`
-  color: red;
-  text-align: center;
-`;
+import ErrorMessage from "components/text/ErrorMessage";
 
 type FormData = {
   username: string;
@@ -33,32 +24,12 @@ type FormData = {
   message?: string;
 };
 
-const CREATE_ACCOUNT_MUTATION = gql`
-  mutation createAccount(
-    $username: String!
-    $email: String!
-    $name: String!
-    $password: String!
-  ) {
-    createAccount(
-      username: $username
-      email: $email
-      name: $name
-      password: $password
-    ) {
-      ok
-      error
-    }
-  }
-`;
-
 export default function SignUp() {
   const history = useHistory();
 
   const {
     register,
     handleSubmit,
-    setValue,
     getValues,
     formState: { errors, isValid },
     setError,
@@ -84,12 +55,7 @@ export default function SignUp() {
     }
   };
 
-  const [createAccount, { loading }] = useMutation<
-    createAccount,
-    createAccountVariables
-  >(CREATE_ACCOUNT_MUTATION, {
-    onCompleted,
-  });
+  const { createAccount, loading } = UseCreateAccount(onCompleted);
 
   return (
     <>
@@ -134,11 +100,11 @@ export default function SignUp() {
           placeholder="Password"
         />
 
-        <Message>{errors?.username?.message}</Message>
-        <Message>{errors?.email?.message}</Message>
-        <Message>{errors?.name?.message}</Message>
-        <Message>{errors?.password?.message}</Message>
-        <Message>{errors?.result?.message}</Message>
+        <ErrorMessage>{errors?.username?.message}</ErrorMessage>
+        <ErrorMessage>{errors?.email?.message}</ErrorMessage>
+        <ErrorMessage>{errors?.name?.message}</ErrorMessage>
+        <ErrorMessage>{errors?.password?.message}</ErrorMessage>
+        <ErrorMessage>{errors?.result?.message}</ErrorMessage>
 
         <BlueButton
           type="submit"

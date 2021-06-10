@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import HeaderTitle from "components/HeaderTitle";
+import DarkModeBtn from "components/button/DarkModeBtn";
+import LogOutBtn from "components/button/LogOutBtn";
+import CreateBtn from "components/button/CreateBtn";
 
 interface IProps {
   children: React.ReactNode;
@@ -20,6 +23,9 @@ export default function Layout({ children }: IProps) {
   return (
     <Container>
       <HeaderTitle />
+      <LogOutBtn />
+      <DarkModeBtn />
+      <CreateBtn /> {/* CreateBtn when logged in */}
       <Content>{children}</Content>
     </Container>
   );

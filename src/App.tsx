@@ -1,6 +1,6 @@
 import AppRouter from "router/AppRouter";
 import { ApolloProvider } from "@apollo/client";
-import { client } from "apollo";
+import { client } from "apollo/apollo";
 import { UseIsDarkMode } from "context/contextFn";
 import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "styled-components";
