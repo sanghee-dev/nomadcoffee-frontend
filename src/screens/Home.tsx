@@ -24,9 +24,10 @@ export default function Home() {
       <HelmetTitle title="Shop" />
 
       <FeedBox>
-        <h1>
-          {location?.state?.message ? location?.state?.message : "Coffee Shop"}
-        </h1>
+        <>
+          <h1>Coffee Shop</h1>
+          <h1>{location?.state?.message}</h1>
+        </>
       </FeedBox>
 
       {data?.seeAllShops?.coffeeShops?.map((coffeeShop) => (

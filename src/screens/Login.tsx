@@ -62,7 +62,6 @@ export default function Login() {
     <>
       <HelmetTitle title="Log In" />
 
-      <ErrorMessage>{location?.state?.message}</ErrorMessage>
       <FormBox onSubmit={handleSubmit(onSubmitValid)}>
         <input
           ref={register(RefObj("Username"))}

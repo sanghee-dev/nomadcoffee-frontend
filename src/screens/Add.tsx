@@ -20,6 +20,7 @@ type FormData = {
 
 export default function Add() {
   const history = useHistory();
+  let fileUrl = null;
 
   const {
     register,
@@ -30,8 +31,13 @@ export default function Add() {
   } = useForm<FormData>({ mode: "onChange" });
 
   const onSubmitValid = (data: any) => {
+    console.log(data);
+
     if (loading) return;
-    createCoffeeShop({ variables: { ...data } });
+
+    createCoffeeShop({
+      variables: { ...data, ...(fileUrl?.length > 0 && { file: "hello" }) },
+    });
   };
   const onCompleted = (data: any) => {
     const { name } = getValues();
@@ -45,6 +51,17 @@ export default function Add() {
         message: `${capitalizeFn(name)} is created!`,
       });
     }
+  };
+
+  //
+  const onFileChange = (e: any) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      fileUrl = reader?.result;
+      console.log(fileUrl);
+    };
+    reader.readAsDataURL(file);
   };
 
   const { createCoffeeShop, loading } = UseCreateCoffeeShop(onCompleted);
@@ -76,7 +93,7 @@ export default function Add() {
           name="longitude"
           placeholder="Longitude"
         />
-        <input ref={register} type="file" name="file" />
+        <input ref={register} type="file" name="file" onChange={onFileChange} />
         <input
           ref={register}
           type="text"
