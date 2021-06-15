@@ -31,13 +31,11 @@ export default function Add() {
   } = useForm<FormData>({ mode: "onChange" });
 
   const onSubmitValid = (data: any) => {
-    console.log(data);
-
+    const { file } = getValues();
+    console.log(file);
     if (loading) return;
 
-    createCoffeeShop({
-      variables: { ...data, ...(fileUrl?.length > 0 && { file: "hello" }) },
-    });
+    createCoffeeShop({ variables: { ...data } });
   };
   const onCompleted = (data: any) => {
     const { name } = getValues();
@@ -53,15 +51,14 @@ export default function Add() {
     }
   };
 
-  //
+  // upload file
   const onFileChange = (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onload = () => {
       fileUrl = reader?.result;
-      console.log(fileUrl);
     };
-    reader.readAsDataURL(file);
+    fileUrl = reader.readAsDataURL(file);
   };
 
   const { createCoffeeShop, loading } = UseCreateCoffeeShop(onCompleted);

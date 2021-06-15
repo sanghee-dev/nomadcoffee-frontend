@@ -26,7 +26,6 @@ export default function Home() {
       <FeedBox>
         <>
           <h1>Coffee Shop</h1>
-          <h1>{location?.state?.message}</h1>
         </>
       </FeedBox>
 
